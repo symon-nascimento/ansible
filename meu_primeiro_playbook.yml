@@ -14,7 +14,7 @@
       name: nginx
       enabled: yes
     
-  - name: Iniciando o Nginx  # Iniciando o serviço pela primeira vez (service nginx start)
+  - name: Iniciando o Nginx   # Iniciando o serviço pela primeira vez (service nginx start)
     service: 
        name: nginx
        state: started
@@ -24,8 +24,10 @@
       src: ./index.html
       dest: /var/www/html
       owner: ubuntu
+    notify: Reiniciando o Nginx # Chamando o handler que possui esta label
 
-  - name: Reiniciando o Nginx  # Reiniciando para reconhecer o novo arquivo default
+  handlers:                 
+  - name: Reiniciando o Nginx   # Reiniciando para reconhecer o novo arquivo default
     service: 
        name: nginx
        state: reloaded
