@@ -1,0 +1,31 @@
+---
+- hosts: webservers           # Nome do grupo alvo (hosts)
+  become: yes                 # Permissão para Rutinha
+  remote_user: ubuntu         # Usuário configurado na máquina alvo
+  tasks:                      # Tarefas a serem executadas
+  - name: Instalando o Nginx  # Nome para a tarefa
+    apt:                      # Pacote a ser utilizado (pacote é um tipo de módulo)
+      name: nginx             # Nome do app
+      state: latest           # Pegar a última versão
+      update_cache: yes       # Realizar o update na máquina antes da instalação
+
+  - name: Habilitando o Nginx # Forçando o serviço a iniciar com o S.O
+    service: 
+      name: nginx
+      enabled: yes
+    
+  - name: Iniciando o Nginx  # Iniciando o serviço pela primeira vez (service nginx start)
+    service: 
+       name: nginx
+       state: started
+  
+  - name: Transferindo arquivo html
+    copy:
+      src: ./index.html
+      dest: /var/www/html
+      owner: ubuntu
+
+  - name: Reiniciando o Nginx  # Reiniciando para reconhecer o novo arquivo default
+    service: 
+       name: nginx
+       state: reloaded
