@@ -19,11 +19,10 @@
        name: nginx
        state: started
   
-  - name: Transferindo arquivo html
-    copy:
-      src: ./index.html
+  - name: Copiando arquivo para alvo com template
+    template:                   # Permite executar recursos locais (Ansible Facts)
+      src: ./index.html         # Isso irá exibir o IP privado no front ->   <h1>Esse é meu IP atual local: {{ansible_facts.eth0.ipv4.address}}</h1>
       dest: /var/www/html
-      owner: ubuntu
     notify: Reiniciando o Nginx # Chamando o handler que possui esta label
 
   handlers:                 
